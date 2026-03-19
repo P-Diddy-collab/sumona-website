@@ -4,7 +4,7 @@ from datetime import datetime
 
 app = Flask(__name__, static_folder=".")
 
-MAX_DEVICES = 999
+MAX_DEVICES = 999999
 COOKIE_NAME = "sid"
 SUPABASE_URL = os.environ.get("SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
