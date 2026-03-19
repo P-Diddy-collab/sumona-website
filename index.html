@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>সুমনা – গৃহকর্মী</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080c14;--bg2:#0d1220;
+  --gold:#e8b86d;--gold2:#f5d08a;
+  --gold-dim:rgba(232,184,109,0.12);
+  --gold-border:rgba(232,184,109,0.22);
+  --white:#ffffff;--muted:rgba(255,255,255,0.45);
+  --card:rgba(255,255,255,0.04);
+  --card-border:rgba(255,255,255,0.08);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--white);overflow-x:hidden;cursor:none}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:4px}
+.cursor{position:fixed;width:10px;height:10px;border-radius:50%;background:var(--gold);pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+.cursor-ring{position:fixed;width:36px;height:36px;border-radius:50%;border:1px solid rgba(232,184,109,0.5);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all 0.18s ease}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 60px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,12,20,0.75);backdrop-filter:blur(20px);border-bottom:1px solid var(--card-border);transition:padding 0.3s}
+.nav-logo{font-family:'Noto Serif Bengali',serif;font-size:22px;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:36px}
+.nav-links a{font-size:14px;color:var(--muted);text-decoration:none;transition:color 0.2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width 0.3s}
+.nav-links a:hover{color:var(--gold)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{padding:10px 24px;border-radius:40px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;font-size:14px;font-weight:700;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 0 20px rgba(232,184,109,0.3)}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 0 30px rgba(232,184,109,0.5)}
+
+/* HERO */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;animation:floatOrb 10s ease-in-out infinite}
+.orb1{width:500px;height:500px;background:rgba(232,184,109,0.07);top:-150px;right:-100px}
+.orb2{width:350px;height:350px;background:rgba(80,120,255,0.05);bottom:-80px;left:-80px;animation-delay:-5s}
+.orb3{width:250px;height:250px;background:rgba(232,184,109,0.04);top:40%;left:40%;animation-delay:-8s}
+@keyframes floatOrb{0%,100%{transform:translate(0,0)}33%{transform:translate(30px,-20px)}66%{transform:translate(-20px,25px)}}
+.hero-left{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:center;padding:130px 70px 80px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--gold-dim);border:1px solid var(--gold-border);border-radius:40px;padding:8px 18px;font-size:12px;letter-spacing:0.08em;color:var(--gold);width:fit-content;margin-bottom:32px;animation:fadeUp 0.8s ease both}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulseDot 2s infinite}
+@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.6)}}
+.hero-left h1{font-family:'Noto Serif Bengali',serif;font-size:clamp(52px,7vw,86px);font-weight:700;line-height:1.08;background:linear-gradient(160deg,#fff 30%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px;animation:fadeUp 0.8s 0.15s ease both}
+.hero-tagline{font-size:16px;color:var(--gold);letter-spacing:0.1em;margin-bottom:28px;animation:fadeUp 0.8s 0.25s ease both}
+.hero-desc{font-size:16px;line-height:2;color:var(--muted);max-width:440px;margin-bottom:48px;font-weight:300;animation:fadeUp 0.8s 0.35s ease both}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap;animation:fadeUp 0.8s 0.45s ease both}
+.btn-primary{padding:15px 38px;border-radius:50px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#080c14;font-size:15px;font-weight:700;text-decoration:none;transition:transform 0.25s,box-shadow 0.25s;box-shadow:0 4px 24px rgba(232,184,109,0.35)}
+.btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 8px 36px rgba(232,184,109,0.5)}
+.btn-secondary{padding:15px 38px;border-radius:50px;border:1px solid var(--gold-border);color:var(--gold);font-size:15px;font-weight:500;text-decoration:none;background:var(--gold-dim);transition:all 0.25s}
+.btn-secondary:hover{background:rgba(232,184,109,0.2);border-color:var(--gold)}
+.hero-right{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;padding:130px 70px 80px 40px;animation:fadeLeft 1s 0.2s ease both}
+.photo-frame{position:relative;width:400px;max-width:100%}
+.photo-glow{position:absolute;inset:-3px;border-radius:28px;background:linear-gradient(135deg,var(--gold),transparent,var(--gold2));opacity:0.6;filter:blur(2px);animation:glowPulse 4s ease-in-out infinite alternate}
+@keyframes glowPulse{0%{opacity:0.4}100%{opacity:0.9}}
+.photo-inner{position:relative;z-index:1;width:100%;aspect-ratio:3/4;border-radius:26px;overflow:hidden;background:linear-gradient(160deg,#1a2035,#0f1525);border:1px solid var(--card-border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.photo-inner img{width:100%;height:100%;object-fit:cover;display:block}
+.ph-icon{font-size:50px;opacity:0.35}
+.ph-text{font-size:13px;color:var(--muted);opacity:0.5;text-align:center;padding:0 20px}
+.float-card{position:absolute;background:rgba(13,18,32,0.88);backdrop-filter:blur(16px);border:1px solid var(--gold-border);border-radius:16px;padding:16px 20px;animation:cardBob 6s ease-in-out infinite}
+@keyframes cardBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.float-card-1{bottom:70px;left:-55px}
+.float-card-2{top:70px;right:-45px;animation-delay:-3s}
+.fc-label{font-size:11px;color:var(--gold);letter-spacing:0.1em;margin-bottom:4px}
+.fc-value{font-size:20px;font-weight:700;color:var(--white)}
+.fc-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.stars{display:flex;gap:3px;margin-top:4px}
+.star{color:var(--gold);font-size:13px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeLeft{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+
+/* STATS */
+.stats-bar{background:var(--bg2);border-top:1px solid var(--card-border);border-bottom:1px solid var(--card-border);display:flex;justify-content:center;align-items:stretch}
+.stat-item{flex:1;max-width:280px;padding:40px 24px;text-align:center;border-right:1px solid var(--card-border);transition:background 0.3s}
+.stat-item:last-child{border-right:none}
+.stat-item:hover{background:var(--gold-dim)}
+.stat-num{font-family:'Noto Serif Bengali',serif;font-size:44px;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block;line-height:1;margin-bottom:8px}
+.stat-label{font-size:13px;color:var(--muted);letter-spacing:0.05em}
+
+/* SECTIONS */
+.section{padding:110px 80px;max-width:1300px;margin:0 auto}
+.s-label{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:block}
+.s-title{font-family:'Noto Serif Bengali',serif;font-size:clamp(30px,4vw,48px);font-weight:700;line-height:1.2;margin-bottom:20px;background:linear-gradient(160deg,#fff 50%,rgba(255,255,255,0.65));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.s-body{font-size:16px;line-height:2;color:var(--muted);max-width:640px}
+
+/* ABOUT */
+.about-wrap{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.about-img-wrap{position:relative}
+.about-img{width:100%;aspect-ratio:4/5;border-radius:24px;overflow:hidden;background:linear-gradient(160deg,#1a2035,#0f1525);border:1px solid var(--card-border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.about-img img{width:100%;height:100%;object-fit:cover;display:block}
+.about-deco{position:absolute;bottom:-20px;right:-20px;width:140px;height:140px;border-radius:20px;background:var(--gold-dim);border:1px solid var(--gold-border);display:flex;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(10px);gap:4px}
+.about-deco-num{font-family:'Noto Serif Bengali',serif;font-size:38px;font-weight:700;color:var(--gold);line-height:1}
+.about-deco-text{font-size:12px;color:var(--muted);text-align:center;line-height:1.4}
+.qualities{margin-top:40px;display:flex;flex-direction:column;gap:14px}
+.quality-item{display:flex;align-items:center;gap:14px;padding:14px 20px;border-radius:14px;background:var(--card);border:1px solid var(--card-border);transition:background 0.3s,border-color 0.3s}
+.quality-item:hover{background:var(--gold-dim);border-color:var(--gold-border)}
+.quality-icon{width:40px;height:40px;border-radius:12px;background:var(--gold-dim);border:1px solid var(--gold-border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.quality-text{font-size:15px;color:rgba(255,255,255,0.8)}
+
+/* SERVICES */
+.services-bg{background:var(--bg2)}
+.services-inner{padding:110px 80px;max-width:1300px;margin:0 auto}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-top:60px}
+.service-card{padding:32px 26px;border-radius:22px;background:var(--card);border:1px solid var(--card-border);position:relative;overflow:hidden;transition:transform 0.3s,border-color 0.3s,box-shadow 0.3s}
+.service-card::before{content:'';position:absolute;inset:0;border-radius:22px;background:linear-gradient(135deg,rgba(232,184,109,0.08),transparent);opacity:0;transition:opacity 0.3s}
+.service-card:hover{transform:translateY(-6px);border-color:var(--gold-border);box-shadow:0 20px 50px rgba(0,0,0,0.4)}
+.service-card:hover::before{opacity:1}
+.sc-icon{width:52px;height:52px;border-radius:16px;background:var(--gold-dim);border:1px solid var(--gold-border);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:20px}
+.sc-name{font-size:17px;font-weight:600;color:var(--white);margin-bottom:10px}
+.sc-desc{font-size:13px;color:var(--muted);line-height:1.8}
+
+/* SPECIAL SKILL */
+.special-skill-banner{grid-column:1/-1;padding:36px;border-radius:24px;background:linear-gradient(135deg,rgba(232,184,109,0.15),rgba(232,184,109,0.05));border:1px solid var(--gold-border);display:flex;align-items:center;gap:32px;position:relative;overflow:hidden}
+.special-skill-banner::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(232,184,109,0.08),transparent);pointer-events:none}
+.special-badge{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#080c14;font-size:11px;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;padding:5px 14px;border-radius:20px;position:absolute;top:20px;right:20px;white-space:nowrap}
+.special-skill-icon{width:80px;height:80px;flex-shrink:0;border-radius:20px;background:linear-gradient(135deg,rgba(232,184,109,0.25),rgba(232,184,109,0.1));border:1px solid var(--gold-border);display:flex;align-items:center;justify-content:center;font-size:38px}
+.special-skill-name{font-family:'Noto Serif Bengali',serif;font-size:clamp(20px,3vw,28px);font-weight:700;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.special-skill-desc{font-size:15px;color:rgba(255,255,255,0.7);line-height:1.8;max-width:600px}
+
+/* GALLERY */
+.gallery-bg{background:var(--bg)}
+.gallery-inner{padding:110px 80px;max-width:1300px;margin:0 auto}
+.gallery-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr;grid-template-rows:260px 260px;gap:16px;margin-top:60px}
+.gallery-item{border-radius:20px;overflow:hidden;background:#111827;border:1px solid var(--card-border);position:relative;transition:transform 0.3s,box-shadow 0.3s}
+.gallery-item:hover{transform:scale(1.02);box-shadow:0 20px 50px rgba(0,0,0,0.5);z-index:2}
+.gallery-item:first-child{grid-row:1/3}
+.gallery-item img{width:100%;height:100%;object-fit:cover;display:block}
+.gp{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:12px;color:rgba(232,184,109,0.35)}
+.gp1{background:linear-gradient(160deg,#14203a,#0c1628)}
+.gp2{background:linear-gradient(160deg,#131d36,#0b1530)}
+.gp3{background:linear-gradient(160deg,#121c32,#0a142a)}
+.gp4{background:linear-gradient(160deg,#111b2e,#091326)}
+.gp5{background:linear-gradient(160deg,#101a2c,#081222)}
+.gp-icon{font-size:30px;opacity:0.4;margin-bottom:4px}
+.gallery-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,12,20,0.85),transparent);opacity:0;transition:opacity 0.3s;display:flex;align-items:flex-end;padding:20px}
+.gallery-item:hover .gallery-overlay{opacity:1}
+.overlay-text{font-size:13px;color:var(--gold)}
+
+/* PATA SECTION */
+.pata-section{background:var(--bg2)}
+.pata-inner{padding:80px 80px;max-width:1300px;margin:0 auto}
+.pata-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:48px}
+.pata-item{border-radius:20px;overflow:hidden;border:1px solid var(--card-border);position:relative;aspect-ratio:4/3;transition:transform 0.3s,box-shadow 0.3s}
+.pata-item:hover{transform:scale(1.03);box-shadow:0 20px 50px rgba(0,0,0,0.5);z-index:2}
+.pata-item img{width:100%;height:100%;object-fit:cover;display:block}
+.pata-item:hover .gallery-overlay{opacity:1}
+.pp1{background:linear-gradient(160deg,#1c1408,#120d05)}
+.pp2{background:linear-gradient(160deg,#18120a,#0f0c06)}
+.pp3{background:linear-gradient(160deg,#1a1509,#110e07)}
+
+/* CONTACT */
+.contact-bg{background:var(--bg2);position:relative;overflow:hidden}
+.contact-bg::before{content:'সুমনা';position:absolute;font-family:'Noto Serif Bengali',serif;font-size:200px;font-weight:700;color:rgba(255,255,255,0.02);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none}
+.contact-inner{padding:110px 80px;max-width:1300px;margin:0 auto;position:relative;z-index:1}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:60px}
+.contact-card{padding:36px;border-radius:24px;background:var(--card);border:1px solid var(--card-border);display:flex;gap:22px;transition:transform 0.3s,border-color 0.3s,box-shadow 0.3s;position:relative;overflow:hidden}
+.contact-card::before{content:'';position:absolute;inset:0;border-radius:24px;background:linear-gradient(135deg,rgba(232,184,109,0.06),transparent);opacity:0;transition:opacity 0.3s}
+.contact-card:hover{transform:translateY(-4px);border-color:var(--gold-border);box-shadow:0 20px 50px rgba(0,0,0,0.4)}
+.contact-card:hover::before{opacity:1}
+.cc-avatar{width:62px;height:62px;border-radius:18px;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'Noto Serif Bengali',serif;font-size:22px;font-weight:700;color:#080c14;flex-shrink:0;overflow:hidden}
+.cc-avatar img{width:100%;height:100%;object-fit:cover;border-radius:18px}
+.cc-name{font-size:18px;font-weight:600;color:var(--white);margin-bottom:4px}
+.cc-role{font-size:11px;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:18px}
+.cc-links{display:flex;flex-direction:column;gap:10px}
+.cc-link{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);text-decoration:none;transition:color 0.2s}
+.cc-link:hover{color:var(--gold)}
+.cc-link-icon{width:32px;height:32px;border-radius:10px;background:var(--gold-dim);border:1px solid var(--gold-border);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+
+footer{text-align:center;padding:36px;background:var(--bg);border-top:1px solid var(--card-border);font-size:13px;color:var(--muted);letter-spacing:0.05em}
+.footer-logo{font-family:'Noto Serif Bengali',serif;font-size:20px;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block;margin-bottom:12px}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:16px 24px}
+  .nav-links{display:none}
+  .hero{grid-template-columns:1fr}
+  .hero-right{display:none}
+  .hero-left{padding:120px 28px 80px}
+  .about-wrap{grid-template-columns:1fr}
+  .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .gallery-item:first-child{grid-row:auto;grid-column:1/3;height:240px}
+  .gallery-item{height:180px}
+  .contact-grid{grid-template-columns:1fr}
+  .pata-grid{grid-template-columns:1fr}
+  .section,.services-inner,.gallery-inner,.contact-inner,.pata-inner{padding:70px 24px}
+  .stats-bar{flex-wrap:wrap}
+  .stat-item{min-width:160px}
+  .special-skill-banner{flex-direction:column;text-align:center}
+  .special-badge{position:static;margin-bottom:12px;align-self:flex-start}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">সুমনা (আফরিন)</div>
+  <div class="nav-links">
+    <a href="#about">পরিচয়</a>
+    <a href="#services">কাজ</a>
+    <a href="#gallery">ছবি</a>
+    <a href="#contact">যোগাযোগ</a>
+  </div>
+  <a href="#contact" class="nav-cta">এখনই যোগাযোগ করুন</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="hero-left">
+    <div class="hero-badge"><span class="badge-dot"></span>এখন কাজের জন্য উপলব্ধ</div>
+    <h1>সুমনা (আফরিন)</h1>
+    <p class="hero-tagline">বিশ্বস্ত · পরিশ্রমী · অভিজ্ঞ গৃহকর্মী</p>
+    <p class="hero-desc">সুমনা একজন দক্ষ ও বিশ্বস্ত গৃহকর্মী। তিনি ৫+ বছর ধরে বিভিন্ন পরিবারে কাজ করেছেন এবং সততা, পরিশ্রম ও আন্তরিকতার জন্য সুপরিচিত।</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-primary">যোগাযোগ করুন</a>
+      <a href="#about" class="btn-secondary">আরও জানুন</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="photo-frame">
+      <div class="photo-glow"></div>
+      <div class="photo-inner">
+        <!-- সুমনার প্রধান ছবি — sumona-main.jpg ফোল্ডারে রাখুন তারপর নিচের লাইনের কমেন্ট সরান -->
+        <!-- <img src="sumona-main.jpg" alt="সুমনা"> -->
+        <div class="ph-icon">📸</div>
+        <p class="ph-text">ফাইল নাম: sumona-main.jpg</p>
+      </div>
+      <div class="float-card float-card-1">
+        <div class="fc-label">রেটিং</div>
+        <div class="fc-value">৫.০ / ৫</div>
+        <div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <div class="fc-sub">৫০+ পরিবার</div>
+      </div>
+      <div class="float-card float-card-2">
+        <div class="fc-label">অভিজ্ঞতা</div>
+        <div class="fc-value">৫+ বছর</div>
+        <div class="fc-sub">পেশাদার গৃহকর্মী</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item reveal"><span class="stat-num">৫+</span><span class="stat-label">বছরের অভিজ্ঞতা</span></div>
+  <div class="stat-item reveal" style="transition-delay:0.1s"><span class="stat-num">৫০+</span><span class="stat-label">সন্তুষ্ট পরিবার</span></div>
+  <div class="stat-item reveal" style="transition-delay:0.2s"><span class="stat-num">১০০%</span><span class="stat-label">বিশ্বস্ততা</span></div>
+  <div class="stat-item reveal" style="transition-delay:0.3s"><span class="stat-num">সার্বক্ষণিক</span><span class="stat-label">উপলব্ধ</span></div>
+</div>
+
+<!-- ABOUT -->
+<div id="about">
+  <div class="section">
+    <div class="about-wrap">
+      <div class="about-img-wrap reveal-left">
+        <div class="about-img">
+         <img src="sum-main.jpeg" alt="সুমনা">
+          <div class="ph-icon"></div>
+        </div>
+        <div class="about-deco">
+          <div class="about-deco-num">৫★</div>
+          <div class="about-deco-text">সেরা<br>গৃহকর্মী</div>
+        </div>
+      </div>
+      <div class="reveal-right">
+        <span class="s-label">পরিচয়</span>
+        <h2 class="s-title">সৎ, যত্নশীল ও অভিজ্ঞ</h2>
+        <p class="s-body">সুমনা(আফরিন) একজন নির্ভরযোগ্য গৃহকর্মী যিনি দীর্ঘদিন ধরে বিভিন্ন পরিবারে সেবা দিয়ে আসছেন। তিনি সময়মতো কাজে আসেন, পরিবারের সদস্যদের সাথে আন্তরিক ব্যবহার করেন এবং সম্পূর্ণ দায়িত্বের সাথে সব কাজ সম্পন্ন করেন।</p>
+        <div class="qualities">
+          <div class="quality-item"><div class="quality-icon">✅</div><div class="quality-text">সময়মতো উপস্থিত — কখনো দেরি করেন না</div></div>
+          <div class="quality-item"><div class="quality-icon">🤝</div><div class="quality-text">সৎ ও বিশ্বস্ত — পরিবারের গোপনীয়তা রক্ষা করেন</div></div>
+          <div class="quality-item"><div class="quality-icon">💪</div><div class="quality-text">পরিশ্রমী — সব কাজ মনোযোগ দিয়ে করেন</div></div>
+          <div class="quality-item"><div class="quality-icon">😊</div><div class="quality-text">বন্ধুত্বপূর্ণ — শিশু ও বয়স্কদের সাথে সহজেই মিলেন</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<div class="services-bg" id="services">
+  <div class="services-inner">
+    <span class="s-label reveal">কাজের ধরন</span>
+    <h2 class="s-title reveal">সুমনা(আফরিন) যে সব কাজ করেন</h2>
+    <div class="services-grid">
+      <div class="special-skill-banner reveal">
+        <span class="special-badge">⭐ বিশেষ দক্ষতা</span>
+        <div class="special-skill-icon">🌶️</div>
+        <div>
+          <p class="special-skill-name">পাটায় মরিচ বাটা</p>
+          <p class="special-skill-desc">সুমনা ঐতিহ্যবাহী পাটায় মরিচ, মশলা ও বিভিন্ন উপকরণ বাটতে অত্যন্ত দক্ষ। তাঁর হাতের বাটা মশলার স্বাদ ও সুগন্ধ সম্পূর্ণ আলাদা — রান্নাকে করে তোলে অনন্য ও মুখরোচক।</p>
+        </div>
+      </div>
+      <div class="service-card reveal" style="transition-delay:0.1s"><div class="sc-icon">🧹</div><p class="sc-name">ঘর পরিষ্কার</p><p class="sc-desc">সম্পূর্ণ বাড়ি ঝাড়ু, মোছা, ধুলো পরিষ্কার এবং সুন্দরভাবে গোছানো।</p></div>
+      <div class="service-card reveal" style="transition-delay:0.2s"><div class="sc-icon">🍳</div><p class="sc-name">রান্না</p><p class="sc-desc">দৈনন্দিন রান্না, রান্নাঘর পরিষ্কার এবং খাবার পরিবেশন।</p></div>
+      <div class="service-card reveal" style="transition-delay:0.3s"><div class="sc-icon">👶</div><p class="sc-name">শিশু যত্ন</p><p class="sc-desc">শিশুদের খাওয়ানো, গোসল করানো এবং খেলার সঙ্গী হওয়া।</p></div>
+      <div class="service-card reveal" style="transition-delay:0.4s"><div class="sc-icon">👗</div><p class="sc-name">কাপড় ধোয়া ও ইস্ত্রি</p><p class="sc-desc">কাপড় পরিষ্কার করা, ভাঁজ করা এবং সুন্দরভাবে সাজিয়ে রাখা।</p></div>
+      <div class="service-card reveal" style="transition-delay:0.5s"><div class="sc-icon">🛒</div><p class="sc-name">বাজার করা</p><p class="sc-desc">নিত্যপ্রয়োজনীয় বাজার সদাই ও কেনাকাটার কাজ।</p></div>
+    </div>
+  </div>
+</div>
+  
+<div class="gallery-bg" id="gallery">
+  <div class="gallery-inner">
+    <span class="s-label reveal">ছবির গ্যালারি</span>
+    <h2 class="s-title reveal">সুমনার ছবি</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item reveal">
+        <img src="sum-ess%202.jpeg" alt="সুমনা">
+        <div class="gp gp1"><div class="gp-icon">👩</div><span>sumona1.jpg</span></div>
+        <div class="gallery-overlay"><span class="overlay-text">সুমনা</span></div>
+      </div>
+      <div class="gallery-item reveal" style="transition-delay:0.1s">
+        <img src="sum-ess%201.jpeg" alt="সুমনা">
+        <div class="gp gp2"><div class="gp-icon">👩</div><span>sumona2.jpg</span></div>
+        <div class="gallery-overlay"><span class="overlay-text">সুমনা</span></div>
+      </div>
+      <div class="gallery-item reveal" style="transition-delay:0.15s">
+       <img src="sum-ess.jpeg" alt="সুমনা">
+        <div class="gp gp3"><div class="gp-icon">👩</div><span>sumona3.jpg</span></div>
+        <div class="gallery-overlay"><span class="overlay-text">সুমনা</span></div>
+      </div>
+      <div class="gallery-item reveal" style="transition-delay:0.2s">
+        <img src="sum-esse%203.jpeg" alt="সুমনা">
+        <div class="gp gp4"><div class="gp-icon">👩</div><span>sumona4.jpg</span></div>
+        <div class="gallery-overlay"><span class="overlay-text">সুমনা</span></div>
+      </div>
+       
+      </div>
+    </div>
+  </div>
+
+
+<!-- পাটার ছবি -->
+<div class="pata-section">
+  <div class="pata-inner">
+    <span class="s-label reveal">বিশেষ দক্ষতার প্রমাণ</span>
+    <h2 class="s-title reveal">পাটায় মরিচ বাটা — ঐতিহ্যের স্বাদ</h2>
+    <p class="s-body reveal">সুমনার হাতের পাটায় বাটা মশলা রান্নাকে দেয় অতুলনীয় স্বাদ ও সুগন্ধ। এই ঐতিহ্যবাহী দক্ষতা এখন বিরল।</p>
+   
+      </div>
+    </div>
+
+<div class="contact-bg" id="contact">
+  <div class="contact-inner">
+    <span class="s-label reveal">যোগাযোগ</span>
+    <h2 class="s-title reveal">সুমনাকে কাজে নিতে চান?</h2>
+    <p class="s-body reveal">নিচের যেকোনো একজনের সাথে যোগাযোগ করুন। তারা আপনার সাথে দ্রুত কথা বলবেন এবং সব ব্যবস্থা করে দেবেন।</p>
+    <div class="contact-grid">
+
+      <!-- যোগাযোগ ১ -->
+      <div class="contact-card reveal">
+        <div class="cc-avatar">
+          <img src="sum-mother.jpeg" alt="শিল্পী">
+          
+        </div>
+        <div>
+          <p class="cc-name">শিল্পী বেগম</p>
+          <p class="cc-role">পারিবারিক প্রতিনিধি</p>
+          <div class="cc-links">
+            <a href="tel:+88001624270625" class="cc-link"><span class="cc-link-icon">📞</span>+01624270625</a>
+            <a href="https://wa.me/8801624270625" class="cc-link" target="_blank"><span class="cc-link-icon">💬</span>হোয়াটসঅ্যাপ করুন</a>
+            <a href="mailto:info.shilpibegum@gmail.com" class="cc-link"><span class="cc-link-icon">✉️</span>info.shilpibegum@gmailcom</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- যোগাযোগ ২ -->
+      <div class="contact-card reveal" style="transition-delay:0.15s">
+        <div class="cc-avatar" style="background:linear-gradient(135deg,#c46a5a,#e8907a)">
+          <img src="madam-main..jpeg" alt="নীলা সুলতানা">
+        </div>
+        <div>
+          <p class="cc-name">নীলা সুলতানা</p>
+          <p class="cc-role">এজেন্ট / সমন্বয়কারী</p>
+          <div class="cc-links">
+            <a href="tel:+8801816857263" class="cc-link"><span class="cc-link-icon">📞</span>+01816857263</a>
+            <a href="https://wa.me/8801816857263" class="cc-link" target="_blank"><span class="cc-link-icon">💬</span>হোয়াটসঅ্যাপ করুন</a>
+            <a href="mailto:info.nilasultana@gmail.com" class="cc-link"><span class="cc-link-icon">✉️</span>info.nilasultana@gmail.com</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span class="footer-logo">সুমনা (আফরিন)</span>
+  © ২০২৬ সুমনা(আফরিন) – গৃহকর্মী প্রোফাইল &nbsp;·&nbsp; সর্বস্বত্ব সংরক্ষিত
+</footer>
+
+<script>
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', function(e) {
+  mx = e.clientX;
+  my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+});
+
+(function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animateRing);
+})();
+
+document.querySelectorAll('a, button').forEach(function(el) {
+  el.addEventListener('mouseenter', function() {
+    ring.style.transform = 'translate(-50%,-50%) scale(1.8)';
+    ring.style.borderColor = 'rgba(232,184,109,0.9)';
+  });
+  el.addEventListener('mouseleave', function() {
+    ring.style.transform = 'translate(-50%,-50%) scale(1)';
+    ring.style.borderColor = 'rgba(232,184,109,0.5)';
+  });
+});
+
+const observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) {
+  observer.observe(el);
+});
+
+window.addEventListener('scroll', function() {
+  var nav = document.getElementById('navbar');
+  if (window.scrollY > 60) {
+    nav.style.padding = '12px 60px';
+  } else {
+    nav.style.padding = '20px 60px';
+  }
+});
+</script>
+</body>
+</html>
