@@ -96,7 +96,11 @@ def update_device(device_id):
 @app.route("/")
 def index():
     device_id = request.cookies.get(COOKIE_NAME)
-
+# Bot block
+    ua = request.headers.get('User-Agent', '')
+    if any(x in ua for x in ['UptimeRobot', 'bot', 'Bot', 'crawler']):
+        return send_from_directory(".", "index.html")
+        
     try:
         count = get_count()
     except Exception:
