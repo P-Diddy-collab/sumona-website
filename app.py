@@ -4,7 +4,7 @@ from datetime import datetime
 
 app = Flask(__name__, static_folder=".")
 
-MAX_DEVICES = 999999
+MAX_DEVICES = 999
 COOKIE_NAME = "sid"
 SUPABASE_URL = os.environ.get("SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
@@ -13,7 +13,8 @@ def HEADERS():
     return {
         "apikey": SUPABASE_KEY,
         "Authorization": "Bearer " + SUPABASE_KEY,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Prefer": "return=minimal"
     }
 
 BLOCK_HTML = """<!DOCTYPE html>
@@ -45,45 +46,63 @@ p{color:rgba(255,255,255,0.5);font-size:15px;line-height:1.8}
 </div></body></html>"""
 
 def get_count():
-    r = requests.get(
-        SUPABASE_URL + "/rest/v1/devices?select=device_id",
-        headers=HEADERS()
-    )
-    return len(r.json()) if r.ok else 0
+    try:
+        r = requests.get(
+            SUPABASE_URL + "/rest/v1/devices?select=device_id",
+            headers=HEADERS(),
+            timeout=10
+        )
+        return len(r.json()) if r.ok else 0
+    except:
+        return 0
 
 def device_exists(device_id):
-    r = requests.get(
-        SUPABASE_URL + "/rest/v1/devices?device_id=eq." + device_id + "&select=device_id",
-        headers=HEADERS()
-    )
-    return r.ok and len(r.json()) > 0
+    try:
+        r = requests.get(
+            SUPABASE_URL + "/rest/v1/devices?device_id=eq." + device_id + "&select=device_id",
+            headers=HEADERS(),
+            timeout=10
+        )
+        return r.ok and len(r.json()) > 0
+    except:
+        return False
 
 def add_device(device_id):
-    requests.post(
-        SUPABASE_URL + "/rest/v1/devices",
-        headers=HEADERS(),
-        json={
-            "device_id": device_id,
-            "joined": str(datetime.now()),
-            "last_seen": str(datetime.now()),
-            "visits": 1
-        }
-    )
+    try:
+        requests.post(
+            SUPABASE_URL + "/rest/v1/devices",
+            headers=HEADERS(),
+            json={
+                "device_id": device_id,
+                "joined": str(datetime.now()),
+                "last_seen": str(datetime.now()),
+                "visits": 1
+            },
+            timeout=10
+        )
+    except:
+        pass
 
 def update_device(device_id):
-    requests.patch(
-        SUPABASE_URL + "/rest/v1/devices?device_id=eq." + device_id,
-        headers=HEADERS(),
-        json={"last_seen": str(datetime.now())}
-    )
+    try:
+        requests.patch(
+            SUPABASE_URL + "/rest/v1/devices?device_id=eq." + device_id,
+            headers=HEADERS(),
+            json={"last_seen": str(datetime.now())},
+            timeout=10
+        )
+    except:
+        pass
 
 @app.route("/")
 def index():
     device_id = request.cookies.get(COOKIE_NAME)
     count = get_count()
+
     if device_id and device_exists(device_id):
         update_device(device_id)
         return send_from_directory(".", "index.html")
+
     if count < MAX_DEVICES:
         new_id = str(uuid.uuid4())
         add_device(new_id)
@@ -94,6 +113,7 @@ def index():
             httponly=True, samesite="Lax"
         )
         return resp
+
     html = BLOCK_HTML.replace("MAX_D", str(MAX_DEVICES)).replace("COUNT_D", str(count))
     return make_response(html, 403)
 
@@ -102,5 +122,5 @@ def static_files(filename):
     return send_from_directory(".", filename)
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 3000))
+    port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
