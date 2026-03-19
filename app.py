@@ -13,8 +13,7 @@ def HEADERS():
     return {
         "apikey": SUPABASE_KEY,
         "Authorization": "Bearer " + SUPABASE_KEY,
-        "Content-Type": "application/json",
-        "Prefer": "return=minimal"
+        "Content-Type": "application/json"
     }
 
 BLOCK_HTML = """<!DOCTYPE html>
@@ -50,10 +49,10 @@ def get_count():
         r = requests.get(
             SUPABASE_URL + "/rest/v1/devices?select=device_id",
             headers=HEADERS(),
-            timeout=10
+            timeout=15
         )
         return len(r.json()) if r.ok else 0
-    except:
+    except Exception:
         return 0
 
 def device_exists(device_id):
@@ -61,10 +60,10 @@ def device_exists(device_id):
         r = requests.get(
             SUPABASE_URL + "/rest/v1/devices?device_id=eq." + device_id + "&select=device_id",
             headers=HEADERS(),
-            timeout=10
+            timeout=15
         )
         return r.ok and len(r.json()) > 0
-    except:
+    except Exception:
         return False
 
 def add_device(device_id):
@@ -78,9 +77,9 @@ def add_device(device_id):
                 "last_seen": str(datetime.now()),
                 "visits": 1
             },
-            timeout=10
+            timeout=15
         )
-    except:
+    except Exception:
         pass
 
 def update_device(device_id):
@@ -89,15 +88,19 @@ def update_device(device_id):
             SUPABASE_URL + "/rest/v1/devices?device_id=eq." + device_id,
             headers=HEADERS(),
             json={"last_seen": str(datetime.now())},
-            timeout=10
+            timeout=15
         )
-    except:
+    except Exception:
         pass
 
 @app.route("/")
 def index():
     device_id = request.cookies.get(COOKIE_NAME)
-    count = get_count()
+
+    try:
+        count = get_count()
+    except Exception:
+        count = 0
 
     if device_id and device_exists(device_id):
         update_device(device_id)
